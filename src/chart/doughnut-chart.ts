@@ -1,40 +1,72 @@
 import { type ChartConfiguration } from 'chart.js';
 
-import { doughnutChartData } from '../utils/static-data';
 import Chart from './chart';
 import { customDoughnutLegend } from './plugins/custom-doughnut-legend';
 
-const ctx = document.getElementById('waste-composition-doughnut') as HTMLCanvasElement;
-
-const config: ChartConfiguration<'doughnut', number[], string> = {
-  type: 'doughnut',
-  data: {
-    labels: doughnutChartData.map((x) => x.label),
-    datasets: [
-      {
-        label: 'Dataset 1',
-        data: doughnutChartData.map((x) => x.valueInPercentage),
-        borderRadius: 16,
-        borderWidth: 0,
-        datalabels: { display: false },
-        backgroundColor: doughnutChartData.map((x) => x.color),
-        hoverBackgroundColor: doughnutChartData.map((x) => x.color),
-      },
-    ],
-  },
-  options: {
-    plugins: {
-      legend: { display: false },
-      // tooltip: { enabled: false },
-      tooltip: { callbacks: { label: (data) => ` ${data.raw}%` } },
-      customDoughnutLegend: {
-        inactiveColors: doughnutChartData.map((x) => x.inactiveColor),
-      },
+const DoughnutChart = ({
+  canvasElement,
+  labels,
+  data,
+  bgColors,
+  inactiveColors,
+  dataUnit = '%',
+  dataLabel,
+}: {
+  canvasElement: HTMLCanvasElement;
+  labels: string[];
+  data: number[];
+  bgColors: string[];
+  inactiveColors: string[];
+  dataUnit?: string;
+  dataLabel?: string;
+}) => {
+  const ctx = canvasElement;
+  const config: ChartConfiguration<'doughnut', number[], string> = {
+    type: 'doughnut',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: dataLabel,
+          data: data,
+          borderRadius: 16,
+          borderWidth: 0,
+          datalabels: { display: false },
+          backgroundColor: bgColors,
+          hoverBackgroundColor: [...bgColors],
+        },
+      ],
     },
-    interaction: {},
-  },
+    options: {
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: (data) => ` ${data.raw}${dataUnit}`,
+            labelColor(tooltipItem) {
+              return {
+                backgroundColor: (
+                  tooltipItem.chart.data.datasets[0].hoverBackgroundColor as string[]
+                )[tooltipItem.dataIndex],
+                borderColor: (tooltipItem.chart.data.datasets[0].hoverBackgroundColor as string[])[
+                  tooltipItem.dataIndex
+                ],
+              };
+            },
+          },
+        },
+        customDoughnutLegend: {
+          inactiveColors: inactiveColors,
+          unit: dataUnit,
+        },
+      },
+      interaction: {},
+    },
 
-  plugins: [customDoughnutLegend],
+    plugins: [customDoughnutLegend],
+  };
+
+  new Chart(ctx, config);
 };
 
-new Chart(ctx, config);
+export { DoughnutChart };

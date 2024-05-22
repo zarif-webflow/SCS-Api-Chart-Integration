@@ -13,6 +13,8 @@ export const customDoughnutLegend: Plugin<'doughnut', { unit: string; inactiveCo
         return;
       }
 
+      legendContainer.innerHTML = '';
+
       const labels = chart.data.labels as string[];
       const dataset = chart.data.datasets.at(0);
 
@@ -23,13 +25,11 @@ export const customDoughnutLegend: Plugin<'doughnut', { unit: string; inactiveCo
 
       const bgColorSetters = dataset.backgroundColor as string[];
 
-      const bgColors = [...bgColorSetters];
-
       const allLegendItems: HTMLElement[] = [];
 
       labels.forEach((label, i) => {
         const data = dataset.data.at(i);
-        const color = bgColors.at(i);
+        const color = bgColorSetters.at(i);
         if (!data) {
           console.error(`Data wasn't found for label index ${i}!`);
           return;

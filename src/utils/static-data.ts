@@ -1,5 +1,3 @@
-import Color from 'color';
-
 export const doughnutChartData = [
   { color: '#E4F408', valueInPercentage: 31.99, label: 'Apparel & Textile' },
   { color: '#AB52F2', valueInPercentage: 18.81, label: 'Fishing Lines' },
@@ -80,10 +78,7 @@ export const doughnutChartData = [
     valueInPercentage: 0.02,
     label: 'Cigarette Butts',
   },
-].map((x) => ({
-  ...x,
-  inactiveColor: Color(x.color).desaturate(0.6).toString(),
-}));
+];
 
 export const graphData = [
   { month: 'Jan', removedPlasticInKgs: 4600 },
