@@ -58,9 +58,13 @@ declare class SevenCleanSeas {
     clientId: number;
     year: number;
   }): Promise<[number]>;
-  clientPlasticComposition(
-    payload: SevenCleanSeasAPI.RequestPayload
-  ): Promise<SevenCleanSeasAPI.PlasticCompositionResponse>;
+  clientPlasticComposition({
+    clientId,
+    year,
+  }: {
+    clientId: number;
+    year: number;
+  }): Promise<{ materialTypeName: string; weightKgRev: number; chartColorCustom: string }[]>;
   clientTopTeams(
     payload: SevenCleanSeasAPI.RequestPayload
   ): Promise<SevenCleanSeasAPI.TopTeamsResponse>;

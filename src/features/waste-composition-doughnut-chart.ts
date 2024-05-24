@@ -1,9 +1,9 @@
-import Color from 'color';
+import { DoughnutChart } from '@/chart/doughnut-chart';
+import { setFinishedFetchFunctions } from '@/utils/fetch-state';
+import { clientId, scsClient } from '@/utils/scs-client';
+import { parseColorString } from '@/utils/util';
 
-import { DoughnutChart } from '../chart/doughnut-chart';
-import { doughnutChartData } from '../utils/static-data';
-
-const init = () => {
+(function () {
   const canvasElement = document.querySelector(
     'canvas#waste-composition-doughnut'
   ) as HTMLCanvasElement | null;
@@ -13,15 +13,27 @@ const init = () => {
     return;
   }
 
-  DoughnutChart({
-    canvasElement,
-    labels: doughnutChartData.map((x) => x.label),
-    data: doughnutChartData.map((x) => x.valueInPercentage),
-    bgColors: doughnutChartData.map((x) => x.color),
-    inactiveColors: doughnutChartData.map((x) => Color(x.color).desaturate(0.6).toString()),
-    dataUnit: '%',
-    dataLabel: 'Waste composition',
-  });
-};
+  scsClient.clientPlasticComposition({ clientId: clientId, year: 0 }).then((res) => {
+    const data = res;
 
-init();
+    const totalWeightKgRev = data.reduce((acc, curr) => acc + curr.weightKgRev, 0);
+
+    const weightInPercentage = data.map((x) =>
+      Math.max(Number.parseFloat(((x.weightKgRev / totalWeightKgRev) * 100).toFixed(2)), 0.01)
+    );
+
+    DoughnutChart({
+      canvasElement,
+      labels: data.map((x) => x.materialTypeName),
+      data: weightInPercentage,
+      bgColors: data.map((x) => parseColorString(x.chartColorCustom).toString()),
+      inactiveColors: data.map((x) =>
+        parseColorString(x.chartColorCustom).desaturate(0.6).toString()
+      ),
+      dataUnit: '%',
+      dataLabel: 'Waste composition',
+    });
+
+    setFinishedFetchFunctions('clientPlasticComposition');
+  });
+})();
