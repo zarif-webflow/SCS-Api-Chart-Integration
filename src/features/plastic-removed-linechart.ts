@@ -1,5 +1,5 @@
-import { LineChart } from '../chart/line-chart';
-import { graphData } from '../utils/static-data';
+import { LineChart } from '@/chart/line-chart';
+import { graphData } from '@/utils/static-data';
 
 const init = () => {
   const canvasElement = document.querySelector(

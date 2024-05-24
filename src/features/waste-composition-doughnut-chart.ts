@@ -13,6 +13,12 @@ import { parseColorString } from '@/utils/util';
     return;
   }
 
+  const wasteSlideItems = [...document.querySelectorAll('[data-waste-slide]')] as HTMLElement[];
+
+  if (wasteSlideItems.length === 0) {
+    console.error('[data-waste-slide] elements were not found!');
+  }
+
   scsClient.clientPlasticComposition({ clientId: clientId, year: 0 }).then((res) => {
     const data = res;
 
@@ -21,6 +27,19 @@ import { parseColorString } from '@/utils/util';
     const weightInPercentage = data.map((x) =>
       Math.max(Number.parseFloat(((x.weightKgRev / totalWeightKgRev) * 100).toFixed(2)), 0.01)
     );
+
+    const setWasteSlideValue = (wasteSlideItem: HTMLElement, materialTypeName: string) => {
+      const dataIndex = data.findIndex((x) => x.materialTypeName === materialTypeName);
+      if (dataIndex === -1) {
+        throw new Error(`Slide Data ${materialTypeName} wasn't found on the fetched data!`);
+      }
+      const wasteValueEl = wasteSlideItem.querySelector('.waste-value');
+      if (!wasteValueEl) {
+        throw new Error(`Slide ${materialTypeName} value element wasn't found!`);
+      }
+      wasteValueEl.textContent = weightInPercentage[dataIndex] + '%';
+      return;
+    };
 
     DoughnutChart({
       canvasElement,
@@ -33,6 +52,26 @@ import { parseColorString } from '@/utils/util';
       dataUnit: '%',
       dataLabel: 'Waste composition',
     });
+
+    for (const wasteSlideItem of wasteSlideItems) {
+      switch (wasteSlideItem.dataset.wasteSlide) {
+        case 'plastic-bottles':
+          setWasteSlideValue(wasteSlideItem, 'Plastic bottles and bottle caps');
+          break;
+        case 'apparel-and-textile':
+          setWasteSlideValue(wasteSlideItem, 'Apparel and textile');
+          break;
+        case 'fishing-net-and-lines':
+          setWasteSlideValue(wasteSlideItem, 'Fishing nets/line');
+          break;
+        case 'plastic-bags':
+          setWasteSlideValue(wasteSlideItem, 'Plastic bags');
+          break;
+        default:
+          console.error('Invalid waste slide value');
+          break;
+      }
+    }
 
     setFinishedFetchFunctions('clientPlasticComposition');
   });
