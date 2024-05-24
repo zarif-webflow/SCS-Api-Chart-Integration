@@ -1,4 +1,5 @@
-import { scsClient } from '../utils/scs-client';
+import { setFinishedFetchFunctions } from '@/utils/fetch-state';
+import { clientId, scsClient } from '@/utils/scs-client';
 
 (function () {
   const peopleHourElClassName = '.people-hour-data';
@@ -9,12 +10,12 @@ import { scsClient } from '../utils/scs-client';
     console.error(`Element ${peopleHourElClassName} wasn't found!`);
   }
 
-  scsClient.clientPeopleHour({ clientId: 18, year: 0 }).then((res) => {
+  scsClient.clientPeopleHour({ clientId: clientId, year: 0 }).then((res) => {
     const value = res;
     peopleHourElements.forEach((peopleHourEl) => {
       peopleHourEl.textContent = value.toLocaleString();
-      peopleHourEl.classList.remove('is-loading');
     });
+    setFinishedFetchFunctions('clientPeopleHour');
     return;
   });
 })();

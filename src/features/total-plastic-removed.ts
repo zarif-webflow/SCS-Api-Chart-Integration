@@ -1,4 +1,5 @@
-import { scsClient } from '../utils/scs-client';
+import { setFinishedFetchFunctions } from '@/utils/fetch-state';
+import { clientId, scsClient } from '@/utils/scs-client';
 
 (function () {
   const textParentClassName = '.total-plastic-removed-parent';
@@ -15,7 +16,7 @@ import { scsClient } from '../utils/scs-client';
     console.error(`Element ${seaTurtleElClassName} wasn't found!`);
   }
 
-  scsClient.clientTotalPlasticRemoved({ clientId: 18, year: 0 }).then((res) => {
+  scsClient.clientTotalPlasticRemoved({ clientId: clientId, year: 0 }).then((res) => {
     const [value] = res;
     textParents.forEach((textParent) => {
       const textNode = textParent.querySelector(textNodeClassName);
@@ -24,12 +25,11 @@ import { scsClient } from '../utils/scs-client';
         return;
       }
       textNode.textContent = value.toLocaleString();
-      textParent.classList.remove('is-loading');
     });
     seaTurtleElements.forEach((seaTurtleEl) => {
       seaTurtleEl.textContent = Math.floor(value / 150).toString();
-      seaTurtleEl.classList.remove('is-loading');
     });
+    setFinishedFetchFunctions('clientTotalPlasticRemoved');
     return;
   });
 })();
