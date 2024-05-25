@@ -28,7 +28,7 @@ const LineChart = ({
           pointStyle: 'rect',
           datalabels: {
             align: 'top',
-            display: (ctx) => ctx.dataIndex !== 0,
+            // display: (ctx) => ctx.dataIndex !== 0,
             color: '#fff',
           },
         },

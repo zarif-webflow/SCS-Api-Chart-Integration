@@ -65,6 +65,15 @@ declare class SevenCleanSeas {
     clientId: number;
     year: number;
   }): Promise<{ materialTypeName: string; weightKgRev: number; chartColorCustom: string }[]>;
+  clientProgressionOfPlasticRemoval({
+    clientId,
+    year,
+  }: {
+    clientId: number;
+    year: number;
+  }): Promise<
+    { year: number; month_No: number; yearMonth: string; totalPlasticRemovalKg: number }[]
+  >;
   clientTopTeams(
     payload: SevenCleanSeasAPI.RequestPayload
   ): Promise<SevenCleanSeasAPI.TopTeamsResponse>;

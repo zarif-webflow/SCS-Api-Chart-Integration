@@ -4,6 +4,7 @@ const FETCH_FUNCTION_NAMES = [
   'clientPeopleHour',
   'clientTotalPlasticRemoved',
   'clientPlasticComposition',
+  'clientProgressionOfPlasticRemoval',
 ] as const;
 
 type FetchFunctionNameType = (typeof FETCH_FUNCTION_NAMES)[number];
