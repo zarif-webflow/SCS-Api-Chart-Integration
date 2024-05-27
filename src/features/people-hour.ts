@@ -8,6 +8,7 @@ import { clientId, scsClient } from '@/utils/scs-client';
 
   if (peopleHourElements.length === 0) {
     console.error(`Element ${peopleHourElClassName} wasn't found!`);
+    return;
   }
 
   scsClient.clientPeopleHour({ clientId: clientId, year: 0 }).then((res) => {

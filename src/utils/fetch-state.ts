@@ -9,11 +9,10 @@ const FETCH_FUNCTION_NAMES = [
 
 type FetchFunctionNameType = (typeof FETCH_FUNCTION_NAMES)[number];
 
-const finishedFetchFunctions: FetchFunctionNameType[] = [];
+const finishedFetchFunctions: Set<FetchFunctionNameType> = new Set();
 
 export const setFinishedFetchFunctions = (functionName: FetchFunctionNameType) => {
-  finishedFetchFunctions.push(functionName);
-  if (finishedFetchFunctions.length === FETCH_FUNCTION_NAMES.length) {
-    removePageLoader();
-  }
+  finishedFetchFunctions.add(functionName);
+  if (finishedFetchFunctions.size !== FETCH_FUNCTION_NAMES.length) return;
+  removePageLoader();
 };

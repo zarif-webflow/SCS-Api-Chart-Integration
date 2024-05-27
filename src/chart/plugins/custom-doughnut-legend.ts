@@ -48,7 +48,7 @@ export const customDoughnutLegend: Plugin<'doughnut', { unit: string; inactiveCo
         legendCircle.style.backgroundColor = color;
 
         const legendValue = document.createElement('p');
-        legendValue.appendChild(document.createTextNode(`${data}${unit}`));
+        legendValue.appendChild(document.createTextNode(`${data.toFixed(2)}${unit}`));
         legendValue.classList.add('doughnut-legend-value');
 
         const legendTitle = document.createElement('p');
