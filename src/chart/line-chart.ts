@@ -1,4 +1,7 @@
 import { type ChartConfiguration } from 'chart.js/auto';
+import Color from 'color';
+
+import { CHART_Y_TICK_PADDING } from '@/utils/constants';
 
 import Chart from './chart';
 
@@ -7,13 +10,17 @@ const LineChart = ({
   labels,
   data,
   dataLabel,
+  color,
 }: {
   canvasElement: HTMLCanvasElement;
   labels: string[];
   data: number[];
   dataLabel?: string;
+  color?: string;
 }) => {
   const ctx = canvasElement;
+  const colorObj = Color(color || '#FFFFFF');
+  const colorString = colorObj.toString();
 
   const config: ChartConfiguration<'line', number[], string> = {
     type: 'line',
@@ -24,12 +31,11 @@ const LineChart = ({
           label: dataLabel,
           data: data,
           borderWidth: 4,
-          borderColor: '#fff',
+          borderColor: colorString,
           pointStyle: 'rect',
           datalabels: {
             align: 'top',
-            // display: (ctx) => ctx.dataIndex !== 0,
-            color: '#fff',
+            color: colorString,
           },
         },
       ],
@@ -42,24 +48,24 @@ const LineChart = ({
           border: { display: false },
           grid: { display: false },
           offset: true,
-          ticks: { color: '#fff' },
+          ticks: { color: colorString },
         },
         y: {
           beginAtZero: false,
           grid: {
             lineWidth: 2,
             color: (ctx) => {
-              if (ctx.index === 0) return 'rgb(255, 255, 255)';
-              return 'rgb(255, 255, 255, 0.15)';
+              if (ctx.index === 0) return colorString;
+              return colorObj.fade(0.85).toString();
             },
           },
           border: { display: false },
           ticks: {
             stepSize: 10000,
             callback: (ctx) => {
-              return ctx.toString() + '    ';
+              return ctx.toString() + CHART_Y_TICK_PADDING;
             },
-            color: '#fff',
+            color: colorString,
           },
         },
       },

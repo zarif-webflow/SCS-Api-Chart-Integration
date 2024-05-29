@@ -1,5 +1,7 @@
 import Color from 'color';
 
+import { FALLBACK_COLOR } from './constants';
+
 export function assertValue<T>(v: T | undefined, errorMessage: string): T {
   if (v === undefined) {
     throw new Error(errorMessage);
@@ -14,6 +16,6 @@ export const parseColorString = (colorString: string) => {
   try {
     return Color(colorString);
   } catch (err) {
-    return Color('#D0D0D0');
+    return Color(FALLBACK_COLOR);
   }
 };

@@ -9,7 +9,9 @@ import { parseColorString } from '@/utils/util';
   ) as HTMLCanvasElement | null;
 
   if (!canvasElement) {
-    console.error('Waste composition canvas element was not found!');
+    console.error(
+      'Waste composition canvas element was not found! Make sure you have a canvas element with this id:#waste-composition-doughnut.'
+    );
     return;
   }
 
