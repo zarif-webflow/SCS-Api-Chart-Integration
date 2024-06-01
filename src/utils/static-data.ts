@@ -1,4 +1,4 @@
-export const doughnutChartData = [
+export const DOUGHNUT_CHART_DATA = [
   { color: '#E4F408', valueInPercentage: 31.99, label: 'Apparel & Textile' },
   { color: '#AB52F2', valueInPercentage: 18.81, label: 'Fishing Lines' },
   { color: '#BD7BF2', valueInPercentage: 10.77, label: 'Plastic Bags' },
@@ -80,7 +80,22 @@ export const doughnutChartData = [
   },
 ];
 
-export const graphData = [
+export const MONTHS = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+];
+
+export const LINE_CHART_DATA = [
   { month: 'Jan', removedPlasticInKgs: 4600 },
   { month: 'Feb', removedPlasticInKgs: 4664 },
   { month: 'Mar', removedPlasticInKgs: 4592 },
