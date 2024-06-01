@@ -19,3 +19,19 @@ export const parseColorString = (colorString: string) => {
     return Color(FALLBACK_COLOR);
   }
 };
+
+export function idToRegex(id: string) {
+  const words = id.split('-');
+  const regexParts = words.map((word) => `\\b${word}s?\\b|\\b${word.replace(/s$/, '')}\\b`);
+  if (words.length === 1) {
+    // Match a single word, allowing for plural forms
+    return new RegExp(regexParts[0], 'i');
+  }
+  // Match at least two words from the id, allowing for plural or singular forms
+  return new RegExp(`(?=.*(${regexParts[0]}))(?=.*(${regexParts[1]}))`, 'i');
+}
+
+export function matchIdWithText(id: string, text: string) {
+  const pattern = idToRegex(id);
+  return pattern.test(text);
+}

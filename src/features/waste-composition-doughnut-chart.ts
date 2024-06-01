@@ -1,7 +1,7 @@
 import { DoughnutChart } from '@/chart/doughnut-chart';
 import { setFinishedFetchFunctions } from '@/utils/fetch-state';
 import { clientId, scsClient } from '@/utils/scs-client';
-import { parseColorString } from '@/utils/util';
+import { matchIdWithText, parseColorString } from '@/utils/util';
 
 (function () {
   const canvasElement = document.querySelector(
@@ -30,19 +30,6 @@ import { parseColorString } from '@/utils/util';
       Math.max(Number.parseFloat(((x.weightKgRev / totalWeightKgRev) * 100).toFixed(2)), 0.01)
     );
 
-    const setWasteSlideValue = (wasteSlideItem: HTMLElement, materialTypeName: string) => {
-      const dataIndex = data.findIndex((x) => x.materialTypeName === materialTypeName);
-      if (dataIndex === -1) {
-        throw new Error(`Slide Data ${materialTypeName} wasn't found on the fetched data!`);
-      }
-      const wasteValueEl = wasteSlideItem.querySelector('.waste-value');
-      if (!wasteValueEl) {
-        throw new Error(`Slide ${materialTypeName} value element wasn't found!`);
-      }
-      wasteValueEl.textContent = weightInPercentage[dataIndex] + '%';
-      return;
-    };
-
     DoughnutChart({
       canvasElement,
       labels: data.map((x) => x.materialTypeName),
@@ -56,23 +43,23 @@ import { parseColorString } from '@/utils/util';
     });
 
     for (const wasteSlideItem of wasteSlideItems) {
-      switch (wasteSlideItem.dataset.wasteSlide) {
-        case 'plastic-bottles':
-          setWasteSlideValue(wasteSlideItem, 'Plastic bottles and bottle caps');
-          break;
-        case 'apparel-and-textile':
-          setWasteSlideValue(wasteSlideItem, 'Apparel and textile');
-          break;
-        case 'fishing-net-and-lines':
-          setWasteSlideValue(wasteSlideItem, 'Fishing nets/line');
-          break;
-        case 'plastic-bags':
-          setWasteSlideValue(wasteSlideItem, 'Plastic bags');
-          break;
-        default:
-          console.error('Invalid waste slide value');
-          break;
+      const wasteSlideId = wasteSlideItem.dataset.wasteSlide;
+
+      if (!wasteSlideId) continue;
+
+      const dataIndex = data.findIndex((x) => matchIdWithText(wasteSlideId, x.materialTypeName));
+
+      if (dataIndex === -1) {
+        console.error(`Slide Data ${wasteSlideId} wasn't found on the fetched data!`);
+        continue;
       }
+
+      const wasteValueEl = wasteSlideItem.querySelector('.waste-value');
+      if (!wasteValueEl) {
+        console.error(`Slide ${wasteSlideId} value element wasn't found!`);
+        continue;
+      }
+      wasteValueEl.textContent = weightInPercentage[dataIndex] + '%';
     }
 
     setFinishedFetchFunctions('clientPlasticComposition');
