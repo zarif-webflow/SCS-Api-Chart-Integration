@@ -15,11 +15,7 @@ import { matchIdWithText, parseColorString } from '@/utils/util';
     return;
   }
 
-  const wasteSlideItems = [...document.querySelectorAll('[data-waste-slide]')] as HTMLElement[];
-
-  if (wasteSlideItems.length === 0) {
-    console.error('[data-waste-slide] elements were not found!');
-  }
+  const wasteCompItems = [...document.querySelectorAll('[data-waste-comp]')] as HTMLElement[];
 
   scsClient.clientPlasticComposition({ clientId: clientId, year: 0 }).then((res) => {
     const data = res;
@@ -42,26 +38,21 @@ import { matchIdWithText, parseColorString } from '@/utils/util';
       dataLabel: 'Waste composition',
     });
 
-    for (const wasteSlideItem of wasteSlideItems) {
-      const wasteSlideId = wasteSlideItem.dataset.wasteSlide;
+    for (const wasteCompItem of wasteCompItems) {
+      const wasteCompId = wasteCompItem.dataset.wasteComp;
 
-      if (!wasteSlideId) continue;
+      if (wasteCompId === undefined) continue;
 
-      const dataIndex = data.findIndex((x) => matchIdWithText(wasteSlideId, x.materialTypeName));
+      const dataIndex = data.findIndex((x) => matchIdWithText(wasteCompId, x.materialTypeName));
 
       if (dataIndex === -1) {
-        console.error(`Slide Data ${wasteSlideId} wasn't found on the fetched data!`);
+        console.error(`Comp Data ${wasteCompId} wasn't found on the fetched data!`);
         continue;
       }
 
-      const wasteValueEl = wasteSlideItem.querySelector('.waste-value');
-      if (!wasteValueEl) {
-        console.error(`Slide ${wasteSlideId} value element wasn't found!`);
-        continue;
-      }
-      const cloneEL = wasteValueEl.cloneNode();
+      const cloneEL = wasteCompItem.cloneNode();
       cloneEL.textContent = weightInPercentage[dataIndex] + '%';
-      wasteValueEl.replaceWith(cloneEL);
+      wasteCompItem.replaceWith(cloneEL);
     }
 
     setFinishedFetchFunctions('clientPlasticComposition');
