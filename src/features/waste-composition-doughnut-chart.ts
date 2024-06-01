@@ -59,7 +59,9 @@ import { matchIdWithText, parseColorString } from '@/utils/util';
         console.error(`Slide ${wasteSlideId} value element wasn't found!`);
         continue;
       }
-      wasteValueEl.textContent = weightInPercentage[dataIndex] + '%';
+      const cloneEL = wasteValueEl.cloneNode();
+      cloneEL.textContent = weightInPercentage[dataIndex] + '%';
+      wasteValueEl.replaceWith(cloneEL);
     }
 
     setFinishedFetchFunctions('clientPlasticComposition');

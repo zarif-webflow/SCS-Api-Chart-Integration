@@ -18,10 +18,14 @@ import { clientId, scsClient } from '@/utils/scs-client';
   scsClient.clientTotalPlasticRemoved({ clientId: clientId, year: 0 }).then((res) => {
     const [value] = res;
     textElements.forEach((textEl) => {
-      textEl.textContent = value.toLocaleString();
+      const cloneEl = textEl.cloneNode();
+      cloneEl.textContent = value.toLocaleString();
+      textEl.replaceWith(cloneEl);
     });
     seaTurtleElements.forEach((seaTurtleEl) => {
-      seaTurtleEl.textContent = Math.floor(value / 150).toString();
+      const cloneEl = seaTurtleEl.cloneNode();
+      cloneEl.textContent = Math.floor(value / 150).toString();
+      seaTurtleEl.replaceWith(cloneEl);
     });
     setFinishedFetchFunctions('clientTotalPlasticRemoved');
     return;

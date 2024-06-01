@@ -14,7 +14,9 @@ import { clientId, scsClient } from '@/utils/scs-client';
   scsClient.clientPeopleHour({ clientId: clientId, year: 0 }).then((res) => {
     const value = res;
     peopleHourElements.forEach((peopleHourEl) => {
-      peopleHourEl.textContent = value.toLocaleString();
+      const clonedEL = peopleHourEl.cloneNode();
+      clonedEL.textContent = value.toLocaleString();
+      peopleHourEl.replaceWith(clonedEL);
     });
     setFinishedFetchFunctions('clientPeopleHour');
     return;
