@@ -13,6 +13,10 @@ import { clientId, scsClient } from '@/utils/scs-client';
 
   scsClient.clientPeopleHour({ clientId: clientId, year: 0 }).then((res) => {
     const value = res;
+    if (value === undefined || value == null) {
+      console.error('clientPeopleHour data error');
+      return;
+    }
     peopleHourElements.forEach((peopleHourEl) => {
       const clonedEL = peopleHourEl.cloneNode();
       clonedEL.textContent = value.toLocaleString();

@@ -18,6 +18,10 @@ import { matchIdWithText, parseColorString } from '@/utils/util';
   const wasteCompItems = [...document.querySelectorAll('[data-waste-comp]')] as HTMLElement[];
 
   scsClient.clientPlasticComposition({ clientId: clientId, year: 0 }).then((res) => {
+    if (res === undefined || res == null) {
+      console.error('clientPeopleHour data error');
+      return;
+    }
     const data = res;
 
     const totalWeightKgRev = data.reduce((acc, curr) => acc + curr.weightKgRev, 0);

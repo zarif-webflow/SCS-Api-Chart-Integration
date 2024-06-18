@@ -16,6 +16,10 @@ import { clientId, scsClient } from '@/utils/scs-client';
   }
 
   scsClient.clientTotalPlasticRemoved({ clientId: clientId, year: 0 }).then((res) => {
+    if (res === undefined || res == null) {
+      console.error('clientPeopleHour data error');
+      return;
+    }
     const [value] = res;
     textElements.forEach((textEl) => {
       const cloneEl = textEl.cloneNode();

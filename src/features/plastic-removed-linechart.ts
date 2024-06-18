@@ -23,6 +23,12 @@ import { MONTHS } from '@/utils/static-data';
     .clientProgressionOfPlasticRemoval({ clientId: clientId, year: new Date().getFullYear() })
     .then((res) => {
       const data = res;
+      console.log('ClientProgressionOfPlasticRemoval');
+      console.table(res);
+      if (data === undefined || data == null) {
+        console.error('clientPeopleHour data error');
+        return;
+      }
 
       const labels = data.map((x) => MONTHS[x.month_No - 1]);
       const chartData = data.map((x) => x.totalPlasticRemovalKg);

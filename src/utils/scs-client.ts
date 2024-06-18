@@ -7,5 +7,7 @@ export const apiToken = assertValue(
   document.body.dataset.apiToken,
   "Can't find data-api-token on body!"
 );
+export const isAdmin = document.body.dataset.isAdmin;
 
-export const scsClient = new SevenCleanSeas(apiToken, 1, clientId);
+export const scsClient =
+  isAdmin === 'false' ? new SevenCleanSeas(apiToken, 1, clientId) : new SevenCleanSeas(apiToken, 0);
