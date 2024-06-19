@@ -12,7 +12,7 @@ import { clientId, scsClient } from '@/utils/scs-client';
   }
 
   scsClient.clientPeopleHour({ clientId: clientId, year: 0 }).then((res) => {
-    const value = res;
+    const value = Array.isArray(res) ? res[0] : res;
     if (value === undefined || value == null) {
       console.error('clientPeopleHour data error');
       return;

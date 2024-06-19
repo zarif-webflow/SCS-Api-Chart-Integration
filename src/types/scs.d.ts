@@ -9,14 +9,14 @@ declare class SevenCleanSeas {
   }: {
     clientId: number;
     year: number;
-  }): Promise<[number] | undefined | null>;
+  }): Promise<[number] | number | undefined | null>;
   clientTotalPlasticRemoved({
     clientId,
     year,
   }: {
     clientId: number;
     year: number;
-  }): Promise<[number] | undefined | null>;
+  }): Promise<[number] | number | undefined | null>;
   clientPlasticComposition({
     clientId,
     year,

@@ -20,10 +20,10 @@ import { clientId, scsClient } from '@/utils/scs-client';
       console.error('clientPeopleHour data error');
       return;
     }
-    const [value] = res;
+    const value = Array.isArray(res) ? res[0] : res;
     textElements.forEach((textEl) => {
       const cloneEl = textEl.cloneNode();
-      cloneEl.textContent = value.toLocaleString();
+      cloneEl.textContent = res.toLocaleString();
       textEl.replaceWith(cloneEl);
     });
     seaTurtleElements.forEach((seaTurtleEl) => {
